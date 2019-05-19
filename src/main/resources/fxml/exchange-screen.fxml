@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Text?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="245.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kantor.controllers.ExchangeController">
+    <children>
+        <Pane prefHeight="400.0" prefWidth="161.0">
+            <children>
+                <MenuButton fx:id="currencyMenuButtonFrom" layoutX="74.0" layoutY="62.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="currency" />
+                <MenuButton fx:id="currencyMenuButtonTo" layoutX="74.0" layoutY="97.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="currency" />
+                <Text layoutX="11.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="exchange to client:" />
+                <Button fx:id="exchangeButton" layoutX="74.0" layoutY="167.0" mnemonicParsing="false" onAction="#getExchangeParameteres" prefHeight="25.0" prefWidth="98.0" text="exchange" />
+                <TextField fx:id="valueField" layoutX="74.0" layoutY="132.0" prefHeight="25.0" prefWidth="98.0" />
+                <TextArea fx:id="infoTextArea" layoutX="7.0" layoutY="248.0" prefHeight="142.0" prefWidth="228.0" />
+                <Text fx:id="exchangeResultField" layoutX="122.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="99.11718441173434" />
+            <DatePicker fx:id="datePicker" layoutX="74.0" layoutY="28.0" prefHeight="25.0" prefWidth="98.0" />
+            <Separator layoutX="8.0" layoutY="208.0" prefHeight="3.0" prefWidth="228.0" />
+            </children>
+        </Pane>
+    </children>
+</StackPane>
