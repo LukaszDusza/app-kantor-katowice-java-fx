@@ -1,5 +1,7 @@
 package kantor.office;
 
+import kantor.model.CurrencyConvertResult;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -25,18 +27,17 @@ public class ExchangeOffice {
         System.out.println();
     }
 
-    public BigDecimal exchange(BigDecimal amount, Currency from, Currency to) {
+    public CurrencyConvertResult exchange(BigDecimal amount, Currency from, Currency to) {
         BigDecimal available = availableFounds.get(to);
-        BigDecimal needed = amount
-                .multiply(new BigDecimal(0.8))
-                .multiply(CurrencyConverter.convert(from, to));
+        BigDecimal course = CurrencyConverter.convert(from, to);
+        BigDecimal marginValue = new BigDecimal(0.8);
+        BigDecimal needed = amount.multiply(marginValue).multiply(course);
 
         DecimalFormat df = new DecimalFormat("##.00");
 
         if (available.intValue() >= needed.intValue()) {
             availableFounds.put(from, availableFounds.get(from).add(amount));
             availableFounds.put(to, availableFounds.get(to).subtract(needed));
-
 
             System.out.println(
                     "Exchanging "
@@ -54,8 +55,11 @@ public class ExchangeOffice {
                     + " " + to.getName()
                     + " insufficient founds!");
         }
-        return needed;
+        return new CurrencyConvertResult.Builder()
+                .amount(amount)
+                .marginValue(marginValue)
+                .rate(course)
+                .result(needed)
+                .build();
     }
-
-
 }

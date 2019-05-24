@@ -2,18 +2,19 @@ package kantor.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import kantor.helpers.Operation;
+import kantor.model.CurrencyConvertResult;
 import kantor.model.ExchangeModel;
 import kantor.office.Currency;
 import kantor.office.ExchangeOffice;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class ExchangeController {
-
 
 
     @FXML
@@ -48,33 +49,32 @@ public class ExchangeController {
                         currencyMenuButtonTo.setText(c.getText()))
         );
 
-
         datePicker.setValue(LocalDate.now());
     }
 
     @FXML
     public void getExchangeParameteres() {
-        ExchangeModel model = new ExchangeModel();
-        model.setCurrencyFrom(Currency.valueOf(currencyMenuButtonFrom.getText()));
-        model.setCurrencyTo(Currency.valueOf(currencyMenuButtonTo.getText()));
-        model.setValue(new BigDecimal(valueField.getText()));
-        model.setDate(datePicker.getValue());
+        ExchangeModel model = new ExchangeModel
+                .Builder()
+                .currencyFrom(Currency.valueOf(currencyMenuButtonFrom.getText()))
+                .currencyTo(Currency.valueOf(currencyMenuButtonTo.getText()))
+                .value(new BigDecimal(valueField.getText()))
+                .date(datePicker.getValue())
+                .build();
+
         sendParametersToExchangeOffice(model);
     }
 
     private void sendParametersToExchangeOffice(ExchangeModel model) {
         ExchangeOffice ex = new ExchangeOffice(1000);
-        BigDecimal result = ex.exchange(model.getValue(),
-                        model.getCurrencyFrom(),
-                        model.getCurrencyTo());
+        CurrencyConvertResult result = ex.exchange(model.getValue(), model.getCurrencyFrom(), model.getCurrencyTo());
+        model.setRate(Operation.changeBigDecimalToString(result.getRate()));
+        model.setMarginValue(result.getMarginValue());
 
-        exchangeResultField.setText(numberFormat(result));
-    }
-
-    private String numberFormat(BigDecimal result) {
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(2);
-        return df.format(result);
+        exchangeResultField.setText(Operation.changeBigDecimalToString(result.getResult()));
+        infoTextArea.setWrapText(true);
+        infoTextArea.setEditable(false);
+        infoTextArea.setText(result.toString());
     }
 
 }
